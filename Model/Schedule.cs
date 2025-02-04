@@ -39,6 +39,7 @@ public class ScheduleDayView
     public string Name { get; set; } = string.Empty;
 
     public IList<Class> Blocks { get; set; } = [];
+    
 }
 
 public class Class

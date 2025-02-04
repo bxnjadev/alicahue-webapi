@@ -7,7 +7,7 @@ namespace ucn_user_review_backend_v3.Controller;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ScheduleController(IScheduleHandler scheduleHandler,
+public class ScheduleController(ICourseManager courseManager,
     IObjectMapper<Model.Schedule, ScheduleView> mapper) : ControllerBase
 {
 
@@ -15,9 +15,13 @@ public class ScheduleController(IScheduleHandler scheduleHandler,
     [Route("/api/schedule/find/{id}")]
     public async Task<ActionResult<ScheduleView>> Find(int id)
     {
-        return  Ok(
-                mapper.Map(await scheduleHandler.GetSchedule(id))
-            );
+        var schedule = await courseManager.FindSchedule(id);
+        if (schedule == null)
+        {
+            return NotFound("User not found");
+        }
+            
+        return Ok(mapper.Map(schedule));
     }
     
 }

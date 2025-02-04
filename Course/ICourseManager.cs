@@ -4,30 +4,57 @@ namespace ucn_user_review_backend_v3.Schedule;
 
 public interface ICourseManager
 {
-
+ 
     /**
      * Find all courses associated from a user
-     * using the user id this involve a collection
+     * using the user id this retrieve a collection
      * with all courses
      * 
      */
     
-    
-    
-    Course[] FindCoursesFromUser(int userId);
+    Task<IList<Course>> FindCoursesFromUser(int userId);
 
+    /**
+     * Find all courses id asocciated from a user
+     * using the user ¿id this retrieve a colection
+     * with all courses
+     * 
+     */
+    Task<IList<int>> FindCoursesIdFromUser(int userId);
+    
+    /**
+     * Obtain the nrc and section from a title course, the title courses are for a example
+     * Name course = [Int. al Desarrollo Web/Móvil (22727-C1)]
+     * The NRC Obtained will be NRC = 22727, Section = C1
+     */
+    
+    Tuple<int, string>? ExtractMetadataFromCourseName(string courseName);
+    
     /**
      * Check if the user belong to the course
      */
     
-    bool UserBelongCourse(int userId);
+    bool UserBelongCourse(int userId,
+     int nrc);
+
+    /**
+     * Search a course by a NRC given
+     * the NRC is a identifier for courses
+     * in the university catholic of the nort
+     */
+    
+    Task<Course?> FindCourseByNrc(int nrc);
     
     /**
      * Find the schedule user from id 
      */
     
-    Model.Schedule? FindSchedule(int userId);
+    Task<Model.Schedule?> FindSchedule(int userId);
 
-    Model.Schedule? FindCommonSchedule(int userId);
+    /**
+      Find classes in common between a set users
+     */
+    
+    Task<IDictionary<string, string[]>> FindCommonSchedule(ISet<int> ids);
 
 }

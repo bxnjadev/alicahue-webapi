@@ -6,12 +6,11 @@ public class ScheduleMapper : IObjectMapper<Model.Schedule, ScheduleView>
 {
     public ScheduleView Map(Model.Schedule entity)
     {
-        var days = new List<ScheduleViewDay>();
-
-        foreach (var keyValuePair in entity.GetSchedule())
+        var days = new List<ScheduleDayView>();
+        foreach (var keyValuePair in entity.Get())
         {   
             days.Add(
-                    new ScheduleViewDay
+                    new ScheduleDayView 
                     {
                         Name = keyValuePair.Key,
                         Blocks = keyValuePair.Value.ToList()

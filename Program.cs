@@ -29,7 +29,7 @@ builder.Services.AddScoped<ICareerProvider, CareerProviderRepository>();
 builder.Services.AddScoped<IObjectMapper<Schedule, ScheduleView>, ScheduleMapper>();
 builder.Services.AddScoped<IDataSourceDispatcher, MainDataSourceDispatcher>();
 builder.Services.AddScoped<IDataSourceRepository, DataSourceRepository>();
-builder.Services.AddScoped<IScheduleHandler, ScheduleHandler>();
+builder.Services.AddScoped<ICourseManager, DefaultCourseManager>();
 
 builder.Services.AddControllers();
 
