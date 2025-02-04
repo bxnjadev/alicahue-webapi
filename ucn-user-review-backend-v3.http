@@ -1,0 +1,6 @@
+@ucn_user_review_backend_v3_HostAddress = http://localhost:5257
+
+GET {{ucn_user_review_backend_v3_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
