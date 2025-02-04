@@ -2,26 +2,25 @@
 
 public class Schedule
 {
-    public IDictionary<string, HashSet<BlockWithClass>> _scheduleMap { get; set; } =
-        new Dictionary<string, HashSet<BlockWithClass>>();
+    private readonly IDictionary<string, HashSet<Class>> _classes =
+        new Dictionary<string, HashSet<Class>>();
 
-    public void AddBlock(string day,
-        BlockWithClass blockWithClass)
+    public void AddClass(string day,
+        Class clazz)
     {
-        var blocks = new HashSet<BlockWithClass>();
-        if (!_scheduleMap.ContainsKey(day))
+        if (_classes.TryGetValue(day, out var dayClasses))
         {
-           blocks = new HashSet<BlockWithClass>();
-           _scheduleMap[day] = blocks;
+            dayClasses = _classes[day];
+            dayClasses.Add(clazz);
+            return;
         }
-
-        blocks = _scheduleMap[day];
-        blocks.Add(blockWithClass);
+        dayClasses = [clazz];
+        _classes[day] = dayClasses;
     }
 
-    public IDictionary<string, HashSet<BlockWithClass>> GetSchedule()
+    public IDictionary<string, HashSet<Class>> Get()
     {
-        return _scheduleMap;
+        return _classes;
     }
 
     public static Schedule EmptySchedule()
@@ -32,24 +31,19 @@ public class Schedule
 
 public class ScheduleView
 {
-
-    public IList<ScheduleViewDay> Days { get; set; }
-    
+    public IList<ScheduleDayView> Days { get; set; } = [];
 }
 
-public class ScheduleViewDay
+public class ScheduleDayView
 {
     public string Name { get; set; } = string.Empty;
 
-    public IList<BlockWithClass> Blocks { get; set; } = [];
-
+    public IList<Class> Blocks { get; set; } = [];
 }
 
-public class BlockWithClass
+public class Class
 {
-    
-    public string Name { get; set; }
-    
-    public string Class { get; set; }
-    
+    public string Block { get; set; } = string.Empty;
+
+    public string Name { get; set; } = string.Empty;
 }

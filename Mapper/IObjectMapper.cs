@@ -10,6 +10,10 @@ public interface IObjectMapper<E,
     
     R Map(E entity);
 
+    /*
+     * This method convert a collection of entities
+     * to other collection to entities 
+     */
     ICollection<R> Map(ICollection<E> entities)
     {
         var group = new List<R>();

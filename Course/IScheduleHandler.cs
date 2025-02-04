@@ -4,8 +4,6 @@ public interface IScheduleHandler
 {
 
     Task<Model.Schedule> GetSchedule(int userId);
-
-    Model.Schedule GetSchedule(int userId,
-        params string[] days);
-
+    
+    
 }

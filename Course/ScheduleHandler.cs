@@ -60,9 +60,5 @@ public class ScheduleHandler(
 
         return schedule;
     }
-
-    public Model.Schedule GetSchedule(int userId, params string[] days)
-    {
-        throw new NotImplementedException();
-    }
+    
 }
