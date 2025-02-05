@@ -9,8 +9,8 @@ namespace ucn_user_review_backend_v3.Controller;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController(IBaseService<User> service, IObjectMapper<User, UserView> mapper) : MainControllerBase<User,
-    UserView>(service, mapper)
+public class UserController(IBaseRepository<User> repository, IObjectMapper<User, UserView> mapper) : MainControllerBase<User,
+    UserView>(repository, mapper)
 {
     private const string StringEmpty = "";
 
@@ -48,7 +48,7 @@ public class UserController(IBaseService<User> service, IObjectMapper<User, User
         }
         
         Console.WriteLine(queries.Count);
-        return Ok(await service.SelectSearchWithPage(u => new UserPreview
+        return Ok(await repository.SelectSearchWithPage(u => new UserPreview
         {
             Id = u.Id,
             Name = u.Name,

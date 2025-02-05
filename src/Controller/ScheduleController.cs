@@ -23,5 +23,16 @@ public class ScheduleController(ICourseManager courseManager,
             
         return Ok(mapper.Map(schedule));
     }
+
+    [HttpGet]
+    [Route("/api/schedule/common-schedule")]
+    public async Task<ActionResult<IDictionary<string, IList<string>>>> FindCommonSchedule(
+            [FromBody] int[] ids
+        )
+    { 
+        return Ok(await courseManager.FindCommonSchedule(
+                ids.ToHashSet()
+            ));
+    }
     
 }

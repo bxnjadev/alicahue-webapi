@@ -34,7 +34,7 @@ public interface ICourseManager
      * Check if the user belong to the course
      */
     
-    bool UserBelongCourse(int userId,
+    Task<bool> UserBelongCourse(int userId,
      int nrc);
 
     /**
@@ -55,6 +55,6 @@ public interface ICourseManager
       Find classes in common between a set users
      */
     
-    Task<IDictionary<string, string[]>> FindCommonSchedule(ISet<int> ids);
+    Task<IDictionary<string, IList<string>>> FindCommonSchedule(ISet<int> ids);
 
 }

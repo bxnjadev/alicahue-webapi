@@ -5,10 +5,10 @@ using ucn_user_review_backend_v3.Data;
 
 namespace ucn_user_review_backend_v3.Service;
 
-public class BaseService<O>(
+public class BaseRepository<O>(
     ApplicationDbContext applicationDbContext,
     IDataSourceDispatcher dispatcher) :
-    IBaseService<O> where O : class
+    IBaseRepository<O> where O : class
 {
 
     protected readonly DbSet<O> DbSet = applicationDbContext

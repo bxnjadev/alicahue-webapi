@@ -15,11 +15,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => {
 
 
 builder.Services.AddScoped(
-        typeof(IBaseService<>),
-        typeof(BaseService<>)
+        typeof(IBaseRepository<>),
+        typeof(BaseRepository<>)
     );
 
-builder.Services.AddScoped<IBaseService<Course>, CourseService>();
+builder.Services.AddScoped<IBaseRepository<Course>, CourseRepository>();
 
 builder.Services.AddScoped<IObjectMapper<Block, BlockView>, BlockMapper>();
 builder.Services.AddScoped<IObjectMapper<Professor, ProfessorView>, ProfessorMapper>();

@@ -9,14 +9,23 @@ public class CareerProviderRepository(ApplicationDbContext applicationDbContext)
 
     private readonly DbSet<User> _users =
         applicationDbContext.Users;
+
+    private ICareerProvider? _cache;
     
-    public async Task<List<string>> All()
+    public List<string> All()
     {
-        return await _users.Select(
+        if (_cache != null)
+        {
+            return _cache.All();
+        }
+        
+        var careers =  _users.Select(
                 u => u.CareerName
             ).Distinct()
             .Where(career => career != "")
-            .ToListAsync();
+            .ToList();
+        _cache = new CareerProviderCache(careers);
+        return careers;
     }
 
     public bool Exists(string name)

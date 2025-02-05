@@ -3,7 +3,7 @@
 public interface ICareerProvider
 {
 
-    Task<List<string>> All();
+    List<string> All();
 
     bool Exists(string name);
 

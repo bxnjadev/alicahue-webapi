@@ -5,22 +5,23 @@ using ucn_user_review_backend_v3.Util;
 namespace ucn_user_review_backend_v3.Schedule;
 
 public class DefaultCourseManager(
-    IBaseService<User> userService,
-    IBaseService<Course> courseService
+    IBaseRepository<User> userRepository,
+    IBaseRepository<Course> courseRepository
 ) : ICourseManager
 {
     private const string Separator = ";";
-
+    private IList<string> _blocks = ["A", "B", "C", "D", "E", "F", "G"];
+     
     public async Task<IList<Course>> FindCoursesFromUser(int userId)
     {
         var codes = await FindCoursesIdFromUser(userId);
-        return await courseService.
+        return await courseRepository.
             SearchAll(course => codes.Contains(course.Nrc));
     }
 
     public async Task<IList<int>> FindCoursesIdFromUser(int userId)
     {
-        var user = await userService.FindByIdAsync(userId);
+        var user = await userRepository.FindByIdAsync(userId);
         if (user == null)
         {
             return Collections.EmptyList<int>();
@@ -58,14 +59,15 @@ public class DefaultCourseManager(
         return null;
     }
 
-    public bool UserBelongCourse(int userId, int nrc)
+    public async Task<bool> UserBelongCourse(int userId, int nrc)
     {
-        throw new NotImplementedException();
+        var courses = await FindCoursesIdFromUser(userId);
+        return courses.Contains(nrc);
     }
 
     public async Task<Course?> FindCourseByNrc(int nrc)
     {
-        var courses = await courseService.SearchAll(
+        var courses = await courseRepository.SearchAll(
             course => course.Nrc == nrc
         );
         return courses.First();
@@ -91,9 +93,41 @@ public class DefaultCourseManager(
         return schedule;
     }
 
-    public Task<IDictionary<string, string[]>> FindCommonSchedule(ISet<int> ids)
+    public async Task<IDictionary<string, IList<string>>> FindCommonSchedule(ISet<int> ids)
     {
-        throw new NotImplementedException();
+        var commonScheduleMap = new Dictionary<string, IList<string>>
+        {
+            {"Lunes", _blocks.ToList()},
+            {"Martes", _blocks.ToList()},
+            {"Miercoles", _blocks.ToList()},
+            {"Jueves", _blocks.ToList()},
+            {"Viernes", _blocks.ToList()},
+            {"Sabado", _blocks.ToList()},
+            {"Domingo", _blocks.ToList()}
+        };
+        
+        var users = new List<IList<Course>>();
+        foreach (var id in ids)
+        {
+            var courses = await FindCoursesFromUser(id);
+            users.Add(courses);
+        }
+        foreach (var courses in users)
+        {
+            foreach (var course in courses)
+            {
+                foreach (var courseBlock in course.Blocks)
+                {
+                    var blocksDay = commonScheduleMap[courseBlock.Day];
+                    if (blocksDay.Contains(courseBlock.BlockValue))
+                    {
+                        blocksDay.Remove(courseBlock.BlockValue);
+                    }
+                }
+            }
+        }
+
+        return commonScheduleMap;
     }
     
 }

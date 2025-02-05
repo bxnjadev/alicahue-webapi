@@ -9,9 +9,9 @@ namespace ucn_user_review_backend_v3.Controller;
 [ApiController]
 [Route("api/[controller]")]
 public class CourseController(
-    IBaseService<Course> service,
+    IBaseRepository<Course> repository,
     IObjectMapper<Course, CourseView> mapper,
-    ICareerProvider careerProvider) : MainControllerBase<Course, CourseView>(service, mapper )
+    ICareerProvider careerProvider) : MainControllerBase<Course, CourseView>(repository, mapper )
 {
     
     [HttpGet]
@@ -30,9 +30,9 @@ public class CourseController(
 
     [HttpGet]
     [Route("/api/courses/all-career")]
-    public async Task<ActionResult<List<string>>> AllCareer()
+    public ActionResult<List<string>> AllCareer()
     {
-        return Ok(await careerProvider.All());
+        return Ok( careerProvider.All());
     }
     
 }

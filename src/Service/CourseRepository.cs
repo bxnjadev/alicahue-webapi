@@ -6,7 +6,7 @@ using ucn_user_review_backend_v3.Model;
 
 namespace ucn_user_review_backend_v3.Service;
 
-public class CourseService(ApplicationDbContext applicationDbContext, IDataSourceDispatcher dispatcher) : BaseService<Course>(applicationDbContext, dispatcher)
+public class CourseRepository(ApplicationDbContext applicationDbContext, IDataSourceDispatcher dispatcher) : BaseRepository<Course>(applicationDbContext, dispatcher)
 {
     
     public override async Task<List<Course>> SearchAll(params Expression<Func<Course, bool>>[] predicate)
