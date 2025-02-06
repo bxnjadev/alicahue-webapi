@@ -9,10 +9,10 @@ namespace ucn_user_review_backend_v3.Controller;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController(IBaseRepository<User> repository, IObjectMapper<User, UserView> mapper) : MainControllerBase<User,
+public class UserController(IBaseRepository<User> repository,
+    IObjectMapper<User, UserView> mapper) : MainControllerBase<User,
     UserView>(repository, mapper)
 {
-    private const string StringEmpty = "";
 
     [HttpGet]
     [Route("/api/find/{id}")]

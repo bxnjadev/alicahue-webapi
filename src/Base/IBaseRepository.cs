@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace ucn_user_review_backend_v3.Service;
+namespace ucn_user_review_backend_v3.Base;
 
 public interface IBaseRepository<O>
 {

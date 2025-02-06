@@ -1,16 +1,21 @@
-﻿using ucn_user_review_backend_v3.Model;
+﻿using ucn_user_review_backend_v3.Base;
+using ucn_user_review_backend_v3.Model;
+using ucn_user_review_backend_v3.Schedule;
 using ucn_user_review_backend_v3.Service;
 using ucn_user_review_backend_v3.Util;
 
-namespace ucn_user_review_backend_v3.Schedule;
+namespace ucn_user_review_backend_v3.Service;
 
 public class DefaultCourseManager(
     IBaseRepository<User> userRepository,
     IBaseRepository<Course> courseRepository
 ) : ICourseManager
 {
+    
     private const string Separator = ";";
-    private IList<string> _blocks = ["A", "B", "C", "D", "E", "F", "G"];
+    private readonly IList<string> _blocks = ["A", "B", "C", "D", "E", "F", "G"];
+    private readonly string[] _days = ["Lunes", "Martes", "Miercoles",
+        "Jueves", "Viernes", "Sabado", "Domingo"];
      
     public async Task<IList<Course>> FindCoursesFromUser(int userId)
     {
@@ -45,18 +50,18 @@ public class DefaultCourseManager(
 
     public Tuple<int, string>? ExtractMetadataFromCourseName(string name)
     {
-        if (name.Contains('('))
+        if (!name.Contains('('))
         {
-            var nrcAndSection = name.Split('(')[1];
-            nrcAndSection = nrcAndSection.Remove( nrcAndSection.Length - 1);
-            var nrcAndSectionPart = nrcAndSection.Split("-");
-
-            var nrc = Int32.Parse(nrcAndSectionPart[0]);
-            var section = nrcAndSectionPart[1];
-            return new Tuple<int, string>(nrc, section);
+            return null;
         }
 
-        return null;
+        var nrcAndSection = name.Split('(')[1];
+        nrcAndSection = nrcAndSection.Remove( nrcAndSection.Length - 1);
+        var nrcAndSectionPart = nrcAndSection.Split("-");
+
+        var nrc = Int32.Parse(nrcAndSectionPart[0]);
+        var section = nrcAndSectionPart[1];
+        return new Tuple<int, string>(nrc, section);
     }
 
     public async Task<bool> UserBelongCourse(int userId, int nrc)
@@ -82,29 +87,20 @@ public class DefaultCourseManager(
             foreach (var courseBlock in course.Blocks)
             {
                 schedule.AddClass(courseBlock.Day, 
-                    new Class
-                    {
-                        Block = courseBlock.BlockValue,
-                        Name= course.Name
-                    });
+                    Class.Create(courseBlock.BlockValue, course.Name));
             }
         }
 
         return schedule;
     }
-
-    public async Task<IDictionary<string, IList<string>>> FindCommonSchedule(ISet<int> ids)
+    
+    public async Task<IDictionary<string, IList<string>>> MatchSchedule(ISet<int> ids)
     {
-        var commonScheduleMap = new Dictionary<string, IList<string>>
+        var commonScheduleMap = new Dictionary<string, IList<string>>();
+        foreach (var day in _days)
         {
-            {"Lunes", _blocks.ToList()},
-            {"Martes", _blocks.ToList()},
-            {"Miercoles", _blocks.ToList()},
-            {"Jueves", _blocks.ToList()},
-            {"Viernes", _blocks.ToList()},
-            {"Sabado", _blocks.ToList()},
-            {"Domingo", _blocks.ToList()}
-        };
+            commonScheduleMap[day] = _blocks.ToList();
+        }
         
         var users = new List<IList<Course>>();
         foreach (var id in ids)
@@ -112,6 +108,7 @@ public class DefaultCourseManager(
             var courses = await FindCoursesFromUser(id);
             users.Add(courses);
         }
+        
         foreach (var courses in users)
         {
             foreach (var course in courses)

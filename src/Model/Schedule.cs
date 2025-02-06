@@ -47,4 +47,15 @@ public class Class
     public string Block { get; set; } = string.Empty;
 
     public string Name { get; set; } = string.Empty;
+
+    public static Class Create(string block,
+        string name)
+    {
+        return new Class
+        {
+            Block = block,
+            Name = name
+        };
+    }
+    
 }

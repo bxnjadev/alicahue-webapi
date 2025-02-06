@@ -1,7 +1,6 @@
 ﻿namespace ucn_user_review_backend_v3.Mapper;
 
-public interface IObjectMapper<E,
-    R>
+public interface IObjectMapper<E, R>
 {
     
     /**

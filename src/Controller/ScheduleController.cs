@@ -30,7 +30,7 @@ public class ScheduleController(ICourseManager courseManager,
             [FromBody] int[] ids
         )
     { 
-        return Ok(await courseManager.FindCommonSchedule(
+        return Ok(await courseManager.MatchSchedule(
                 ids.ToHashSet()
             ));
     }

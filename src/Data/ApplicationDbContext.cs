@@ -8,12 +8,11 @@ public class ApplicationDbContext : DbContext
     
     public ApplicationDbContext() {}
     
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options )
-        : base(options) {}
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options ) : base(options) {}
 
-    public DbSet<User> Users { get; set; } = null;
+    public DbSet<User> Users { get; set; }
 
-    public DbSet<Course> Courses { get; set; } = null;
+    public DbSet<Course> Courses { get; set; } 
 
     protected override void OnModelCreating(
         ModelBuilder modelBuilder

@@ -52,9 +52,9 @@ public interface ICourseManager
     Task<Model.Schedule?> FindSchedule(int userId);
 
     /**
-      Find classes in common between a set users
+      Match hours free in common between a set users
      */
     
-    Task<IDictionary<string, IList<string>>> FindCommonSchedule(ISet<int> ids);
+    Task<IDictionary<string, IList<string>>> MatchSchedule(ISet<int> ids);
 
 }
