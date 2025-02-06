@@ -3,10 +3,12 @@ using ucn_user_review_backend_v3.Base;
 using ucn_user_review_backend_v3.Data;
 using ucn_user_review_backend_v3.Mapper;
 using ucn_user_review_backend_v3.Model;
-using ucn_user_review_backend_v3.Schedule;
 using ucn_user_review_backend_v3.Service;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options => {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ucn_user_review_backend_v3.Mapper;
 using ucn_user_review_backend_v3.Model;
-using ucn_user_review_backend_v3.Schedule;
+using ucn_user_review_backend_v3.Service;
 
 namespace ucn_user_review_backend_v3.Controller;
 
@@ -26,7 +26,7 @@ public class ScheduleController(ICourseManager courseManager,
 
     [HttpGet]
     [Route("/api/schedule/common-schedule")]
-    public async Task<ActionResult<IDictionary<string, IList<string>>>> FindCommonSchedule(
+    public async Task<ActionResult<IDictionary<string, IList<string>>>> MatchSchedule(
             [FromBody] int[] ids
         )
     { 

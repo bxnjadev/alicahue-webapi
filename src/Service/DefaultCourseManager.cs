@@ -1,6 +1,5 @@
 ﻿using ucn_user_review_backend_v3.Base;
 using ucn_user_review_backend_v3.Model;
-using ucn_user_review_backend_v3.Schedule;
 using ucn_user_review_backend_v3.Service;
 using ucn_user_review_backend_v3.Util;
 

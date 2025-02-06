@@ -1,6 +1,6 @@
 ﻿using ucn_user_review_backend_v3.Model;
 
-namespace ucn_user_review_backend_v3.Schedule;
+namespace ucn_user_review_backend_v3.Service;
 
 public interface ICourseManager
 {
@@ -15,8 +15,8 @@ public interface ICourseManager
     Task<IList<Course>> FindCoursesFromUser(int userId);
 
     /**
-     * Find all courses id asocciated from a user
-     * using the user ¿id this retrieve a colection
+     * Find all courses id associated from a user
+     * using the user id this retrieve a collection
      * with all courses
      * 
      */
