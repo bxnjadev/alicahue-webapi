@@ -2,41 +2,44 @@ using Microsoft.EntityFrameworkCore;
 using ucn_user_review_backend_v3.Base;
 using ucn_user_review_backend_v3.Data;
 using ucn_user_review_backend_v3.Mapper;
+using ucn_user_review_backend_v3.Mapper.Types;
 using ucn_user_review_backend_v3.Model;
 using ucn_user_review_backend_v3.Service;
 
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options => {
+services.AddDbContext<ApplicationDbContext>(options => {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
 
-builder.Services.AddScoped(
+services.AddScoped(
         typeof(IBaseRepository<>),
         typeof(BaseRepository<>)
     );
 
-builder.Services.AddScoped<IBaseRepository<Course>, CourseRepository>();
+services.AddScoped<IBaseRepository<Course>, CourseRepository>();
 
-builder.Services.AddScoped<IObjectMapper<Block, BlockView>, BlockMapper>();
-builder.Services.AddScoped<IObjectMapper<Professor, ProfessorView>, ProfessorMapper>();
-builder.Services.AddScoped<IObjectMapper<Course, CourseView>,CourseMapper>();
-builder.Services.AddScoped<IObjectMapper<User, UserView>, UserMapper>();
-builder.Services.AddScoped<ICareerProvider, CareerProviderRepository>();
-builder.Services.AddScoped<IObjectMapper<Schedule, ScheduleView>, ScheduleMapper>();
-builder.Services.AddScoped<IDataSourceDispatcher, MainDataSourceDispatcher>();
-builder.Services.AddScoped<IDataSourceRepository, DataSourceRepository>();
-builder.Services.AddScoped<ICourseManager, DefaultCourseManager>();
+services.AddScoped<IObjectMapper<Block, BlockView>, BlockMapper>();
+services.AddScoped<IObjectMapper<Professor, ProfessorView>, ProfessorMapper>();
+services.AddScoped<IObjectMapper<Course, CourseView>,CourseMapper>();
+services.AddScoped<IObjectMapper<User, UserView>, UserMapper>();
+services.AddScoped<IObjectMapper<User, UserPreview>, UserPreviewMapper>();
+services.AddScoped<ICareerProvider, CareerProviderRepository>();
+services.AddScoped<IObjectMapper<Schedule, ScheduleView>, ScheduleMapper>();
+services.AddScoped<IDataSourceDispatcher, MainDataSourceDispatcher>();
+services.AddScoped<IDataSourceRepository, DataSourceRepository>();
+services.AddScoped<ICourseManager, DefaultCourseManager>();
 
-builder.Services.AddControllers();
+services.AddControllers();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
 
 var app = builder.Build();
 
