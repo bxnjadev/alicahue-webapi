@@ -44,11 +44,25 @@ services.AddSwaggerGen();
 
 var app = builder.Build();
 
+var port = Environment.GetEnvironmentVariable("PORT") ?? "80";
+
+builder.WebHost.UseUrls(
+    $"http://0.0.0.0:{port}"
+);
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapGet("/", () =>
+{
+    return Results.Ok(new
+    {
+        message = "Backend funcionando"
+    });
+});
 
 app.UseHttpsRedirection();
 app.MapControllers();
