@@ -47,15 +47,15 @@ builder.Services.AddCors(options =>
     options.AddPolicy("Frontend", policy =>
     {
         policy
-            .WithOrigins(
-                "https://arma-tu-horario-2.netlify.app"
-            )
+            .AllowAnyOrigin()
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
 });
 
 var app = builder.Build();
+
+app.UseCors("Frontend");
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "80";
 
