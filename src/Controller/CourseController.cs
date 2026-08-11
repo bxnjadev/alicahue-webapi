@@ -32,7 +32,7 @@ public class CourseController(
         if (searchedCourseName != "")
         {
             Console.WriteLine("Aplicando where");
-            where = course => course.Name.ToLower().Contains(searchedCourseName);
+            where = course => course.Name.ToLower().Contains(searchedCourseName.ToLower());
         }
         
         var courses = await repository.AllWithIncludesAsync(page, where, course => course.Blocks, course => course.Professors);

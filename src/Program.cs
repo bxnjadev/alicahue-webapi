@@ -1,3 +1,4 @@
+using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using ucn_user_review_backend_v3.Base;
 using ucn_user_review_backend_v3.Data;
@@ -12,7 +13,10 @@ var services = builder.Services;
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+Env.Load();
+
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION");
+
 Console.WriteLine(connectionString);
 services.AddDbContext<ApplicationDbContext>(options => {
     options.UseNpgsql(connectionString);
