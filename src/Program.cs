@@ -13,9 +13,11 @@ var services = builder.Services;
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
-Env.Load();
+//Env.Load();
 
-var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION");
+//var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION");
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 Console.WriteLine(connectionString);
 services.AddDbContext<ApplicationDbContext>(options => {
