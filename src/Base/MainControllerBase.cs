@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ucn_user_review_backend_v3.Mapper;
+using ucn_user_review_backend_v3.Model;
 using ucn_user_review_backend_v3.Service;
 
 namespace ucn_user_review_backend_v3.Base;
@@ -25,6 +26,7 @@ public class MainControllerBase<O, R>(IBaseRepository<O> repository,
     protected async Task<ActionResult<List<R>>> AllAsync()
     {
 
+        
         var elements = await repository.AllAsync();
         var elementsMapped = mapper.Map(elements);
         

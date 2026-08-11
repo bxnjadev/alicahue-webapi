@@ -37,7 +37,11 @@ public interface IBaseRepository<O>
     
     Task<List<O>> AllAsync();
 
+    Task<List<O>> AllWithIncludesAsync(int page, Expression<Func<O, bool>>? where = null, 
+     params Expression<Func<O, object>>[] includes);
+    
     /**
+     * 
      * Store a new entity in the repository way async 
      */
     

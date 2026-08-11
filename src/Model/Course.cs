@@ -12,7 +12,7 @@ public class Course
     
     [MaxLength(50)]
     public string Description { get; set; } = string.Empty;
-    public int CourseNumber { get; set; } = 0;
+    public string CourseNumber { get; set; } = string.Empty;
     
     [MaxLength(50)]
     public string Section { get; set; } = string.Empty;
@@ -38,7 +38,7 @@ public class CourseView
     public int Id { get; set; } = 0;
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public int CourseNumber { get; set; } = 0;
+    public string CourseNumber { get; set; } = string.Empty;
     public string Section { get; set; } = string.Empty;
     public int Hours { get; set; } = 0;
     public int Nrc { get; set; } = 0;

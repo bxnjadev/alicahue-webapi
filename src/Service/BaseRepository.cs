@@ -23,6 +23,32 @@ public class BaseRepository<O>(
         return entity;
     }
 
+    public virtual async Task<List<O>> AllWithIncludesAsync(int page, 
+        Expression<Func<O, bool>>? where = null, 
+        params Expression<Func<O, object>>[] includes)
+    {
+        var firstPosition = (page - 1) * CountElements;
+
+
+
+        IQueryable<O> query = DbSet;
+
+        if (where != null)
+        {
+            query = query.Where(where);
+        }
+        
+        foreach (var include in includes)
+        {
+            query = query.Include(include);
+        }
+
+
+        return await query.AsSplitQuery()
+                .Skip(firstPosition)
+                .Take(CountElements).ToListAsync();
+    }
+    
     public virtual O Delete(O entity)
     {
         DbSet.Remove(entity);
@@ -96,7 +122,6 @@ public class BaseRepository<O>(
         
         foreach (var expression in predicate)
         {
-            Console.WriteLine("MAKE WHERE");
             set = set.Where(expression);
         }
 

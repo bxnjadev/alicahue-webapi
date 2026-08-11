@@ -11,6 +11,8 @@ BlockView>
         return new BlockView
         {
             BlockValue = entity.BlockValue,
+            Day = entity.Day,
+            Room = entity.Room,
             Id = entity.Id
         };
     }

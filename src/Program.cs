@@ -13,8 +13,9 @@ builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+Console.WriteLine(connectionString);
 services.AddDbContext<ApplicationDbContext>(options => {
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    options.UseNpgsql(connectionString);
 });
 
 
