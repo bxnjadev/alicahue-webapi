@@ -19,11 +19,14 @@ public class ApplicationDbContext : DbContext
     )
     {
 
+        modelBuilder.Entity<Course>()
+            .ToTable("Courses", "public");
+        
         modelBuilder.Entity<Block>()
-            .ToTable("blocks");
+            .ToTable("blocks", "public");
         
         modelBuilder.Entity<Professor>()
-            .ToTable("professors");
+            .ToTable("professors", "public");
         
         modelBuilder.Entity<Course>()
             .HasMany(c => c.Blocks)

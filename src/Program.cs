@@ -1,5 +1,6 @@
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using ucn_user_review_backend_v3.Base;
 using ucn_user_review_backend_v3.Data;
 using ucn_user_review_backend_v3.Mapper;
@@ -20,6 +21,7 @@ builder.Logging.AddConsole();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 Console.WriteLine(connectionString);
+
 services.AddDbContext<ApplicationDbContext>(options => {
     options.UseNpgsql(connectionString);
 });
@@ -60,6 +62,55 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider
+        .GetRequiredService<ApplicationDbContext>();
+
+    var connection = (NpgsqlConnection)db.Database.GetDbConnection();
+
+    try
+    {
+
+      
+        await using var command = connection.CreateCommand();
+
+        command.CommandText = """
+                              SELECT
+                                  datname,
+                                  pg_get_userbyid(datdba) AS owner,
+                                  datallowconn
+                              FROM pg_database
+                              WHERE NOT datistemplate
+                              ORDER BY datname;
+                              """;
+
+        await using var reader = await command.ExecuteReaderAsync();
+
+        while (await reader.ReadAsync())
+        {
+            Console.WriteLine(
+                $"Database: {reader.GetString(0)}, " +
+                $"Owner: {reader.GetString(1)}, " +
+                $"Allow connection: {reader.GetBoolean(2)}"
+            );
+        }
+        
+        
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error de conexión: {ex.Message}");
+    }
+    finally
+    {
+        await connection.CloseAsync();
+    }
+    
+    
+    
+}
 
 app.UseCors("Frontend");
 

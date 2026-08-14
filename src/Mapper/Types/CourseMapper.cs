@@ -19,7 +19,7 @@ public class CourseMapper(IObjectMapper<Professor, ProfessorView> professorMappe
         return new CourseView
         {
             Id = course.Id,
-            Description = course.Description,
+            Available = course.Available,
             UniversityType = course.UniversityType,
             Section = course.Section,
             CourseNumber = course.CourseNumber,
